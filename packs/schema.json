@@ -1,0 +1,31 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Fault Line Lab standard pack",
+ "description": "One standard's practice questions. Each item has exactly one choice whose tag is null (the correct answer); every non-null tag must be a key in misconceptions. The app also enforces those two rules and unique item ids, which JSON Schema cannot fully express.",
+ "type": "object",
+ "required": ["id", "code", "title", "text", "grade", "items", "misconceptions"],
+ "properties": {
+  "id": {"type": "string", "minLength": 1, "description": "Unique pack id, e.g. 8-ESS3-1"},
+  "code": {"type": "string", "minLength": 1, "description": "Standard code shown to students"},
+  "title": {"type": "string", "minLength": 1},
+  "text": {"type": "string", "minLength": 1, "description": "Standard wording"},
+  "grade": {"type": "string", "minLength": 1},
+  "items": {
+   "type": "array", "minItems": 1,
+   "items": {
+    "type": "object", "required": ["id", "q", "c"],
+    "properties": {
+     "id": {"type": "string", "minLength": 1},
+     "q": {"type": "string", "minLength": 1},
+     "c": {
+      "type": "array", "minItems": 2,
+      "items": {"type": "array", "prefixItems": [{"type": "string", "minLength": 1}, {"type": ["string", "null"]}], "minItems": 2, "maxItems": 2},
+      "contains": {"type": "array", "prefixItems": [true, {"type": "null"}]},
+      "minContains": 1, "maxContains": 1
+     }
+    }
+   }
+  },
+  "misconceptions": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+ }
+}

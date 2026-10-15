@@ -12,3 +12,4 @@ table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.5rem}th,td
 input[type=range]{width:min(260px,60vw);vertical-align:middle}fieldset{border:1px solid #3b5277}
 .scroll{overflow-x:auto;max-width:100%}
 @media (max-width:600px){main{padding:.4rem}.card{padding:.6rem}canvas{width:calc(100vw - .8rem);max-width:none;margin-left:-.2rem}}
+[hidden]{display:none!important}p.ok{color:var(--ok)}p.bad{color:var(--bad)}textarea,select{font:inherit;max-width:100%;background:#0f1b2d;color:var(--ink);border:1px solid #33496d;border-radius:8px;padding:.4rem}#list li{margin:.4rem 0}
