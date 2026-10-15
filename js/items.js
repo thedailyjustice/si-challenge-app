@@ -22,3 +22,6 @@ export const ITEMS=[
 {id:"d3",q:"A map shows a chain of volcanoes in the middle of the Pacific Plate, getting older toward the northwest. What made them?",c:[["The plate moving over a hotspot",null],["A hidden plate boundary",'hotspot'],["Warm ocean currents",'weather'],["Chance",'random']]},
 {id:"d4",q:"Region A had 40 quakes in 10 years. Region B had 2. Which forecast fits the data best?",c:[["Region A is more likely to have quakes in the coming years",null],["Region B is due for a quake on a known date",'exact'],["Region A is safe now that it had so many",'once'],["Both regions have the same chance",'random']]}
 ];
+export const STEM_STANDARDS=[
+{code:"STEM Innovators 3.4",text:"Illustrate how the practices of science and engineering relate to the innovation process (developing and using models; analyzing and interpreting data)."},
+{code:"STEM Innovators 3.5",text:"Apply science and engineering practices to improve the product in a measurable manner: design, produce, test, and analyze an improved product."}];
