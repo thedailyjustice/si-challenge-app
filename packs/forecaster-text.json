@@ -1,0 +1,63 @@
+{
+ "_note": "All student-facing text for the Quake Forecaster guided mode (8.ESS3.1). Draft by Forge 2026-10-15, awaiting Proof. Facts checked against data/usgs-m6-2016-2025.csv and js/station.js.",
+ "title": "Quake Forecaster",
+ "mission": "Can you predict where the next big quake is most likely? Use real USGS data to find out.",
+ "intro": "Each dot is a real magnitude 6 or bigger earthquake from the USGS. The model only sees quakes from 2016 to 2020. Then it forecasts which map squares will have a big quake from 2021 to 2025. We check it against what really happened.",
+ "red": "A red square means the model thinks a big quake is more likely there over the next few years. It does not mean a quake will happen on a certain date.",
+ "legend": "Bright dots: 2021–2025 quakes the model tried to forecast. Faint dots: 2016–2020 quakes it learned from.",
+ "stepNames": ["Predict", "Change one setting", "See what changed", "Explain"],
+ "radLabel": "How far the model looks around each square",
+ "radWhy": "Quakes cluster in long belts along plate boundaries. Looking at nearby squares follows a boundary and can catch more quakes. But it also spreads risk into quiet plate interiors, which makes more false alarms.",
+ "cutLabel": "Past quakes needed to call a square risky",
+ "cutWhy": "A higher bar means the model only flags squares with many past quakes. That gives fewer false alarms but more misses. A lower bar catches more but cries wolf more often.",
+ "step1": {
+  "lead": "Step 1: Predict. First the model runs once with its starting settings. That run is your baseline. Before you change anything, make a prediction.",
+  "q": "If the model looks farther around each square, what do you think will happen?",
+  "choices": ["It will catch more quakes, but it will also make more false alarms", "It will catch fewer quakes", "Nothing will change"],
+  "button": "Lock in my prediction and run the baseline"
+ },
+ "step2": {
+  "lead": "Step 2: Change ONE setting. Scientists change one thing at a time. That way they know what caused the change.",
+  "needOne": "Change one setting from the baseline, then train.",
+  "tooMany": "You changed both settings. Put one back so only one is different from the baseline.",
+  "button": "Train and test"
+ },
+ "step3": {
+  "lead": "Step 3: See what changed. Compare your new run to the baseline.",
+  "rows": {"acc": "Accuracy (squares it got right)", "tp": "Quake areas caught", "fn": "Quake areas missed", "fp": "False alarms", "base": "A model that always says \"no quake\""},
+  "cols": ["", "Baseline", "Your change", "Difference"],
+  "accNote": "Accuracy can fool you. Most squares never have a big quake, so a model that always says \"no quake\" still scores high. Check what the model caught and missed, too.",
+  "predRight": "Your prediction matched what happened.",
+  "predWrong": "Your prediction did not match. That is fine. Scientists learn from surprises.",
+  "button": "Next: explain it"
+ },
+ "step4": {
+  "lead": "Step 4: Explain. Finish the sentence in your own words.",
+  "starter": "When I changed ___, the model ___ because ___.",
+  "hint": "No names. This stays only on this device.",
+  "button": "Save and see what we found out"
+ },
+ "findings": {
+  "title": "What you found out",
+  "points": [
+   "Big quakes cluster along plate boundaries. That is why the red squares follow long belts on the map.",
+   "A forecast gives the likelihood of a quake over years. No one can name the exact date.",
+   "Some quakes happen far from any plate boundary, like the New Madrid Seismic Zone near Memphis. It had no magnitude 6 quakes in this data, so a model trained only on past big quakes cannot flag it. The risk there is still real.",
+   "The model misses some real quakes. With the starting settings, it misses the square with Hawaii. That square had only 1 big quake from 2016 to 2020, then another in 2021.",
+   "It also misses the square with the 2023 Turkey–Syria earthquakes. That square had 1 big quake from 2016 to 2020, then 8 from 2021 to 2025."
+  ]
+ },
+ "check": {
+  "q": "The model colors the square around a city red. What does that mean?",
+  "choices": [
+   ["A big quake is more likely there over the next few years", null, "Correct. A forecast is about likelihood over time, not a date."],
+   ["A big quake will happen there on a date the model knows", "exact", "Not quite. No one can predict the exact day of a quake. Red means a higher chance over years."],
+   ["Squares that are not red are safe from quakes", "safe", "Not quite. The model misses some quakes, like Hawaii and Turkey–Syria. A square that is not red can still have one."],
+   ["The weather there causes quakes", "weather", "Not quite. Weather doesn't cause quakes. They come from plates moving deep underground."]
+  ]
+ },
+ "freePlay": "Free play: change any settings and test as many times as you like. Your runs are listed below.",
+ "restart": "Start the guided steps again",
+ "runsCaption": "Your test runs (first run is your baseline)",
+ "think": "Think: Look at Memphis and the middle of plates. Why does the model rarely flag them?"
+}

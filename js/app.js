@@ -1,4 +1,4 @@
-import {updateMastery,initMastery,advise} from './coach.js';import {mount} from './station.js';import {validatePack,loadUploaded,saveUploaded,PACKS_KEY} from './packs.js';
+import {updateMastery,initMastery,advise} from './coach.js';import {mount,GUIDE_KEY} from './station.js';import {validatePack,loadUploaded,saveUploaded,PACKS_KEY} from './packs.js';
 const BUILTIN=await (await fetch('packs/8-ESS3-1.json')).json();const QUAKE_PACK='8-ESS3-1';
 const KEY='faultline-v2',OLD='faultline-v1';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -18,7 +18,7 @@ const shown=()=>{const s=st();return s.answered?s.mastery:0};
 const bar=()=>`<div class="bar" role="progressbar" aria-label="Mastery" aria-valuenow="${Math.round(shown()*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${shown()*100}%"></i></div><p><small>${Math.round(shown()*100)}% mastery · ${st().answered} answered</small></p>`;
 function navSync(){const q=pack().id===QUAKE_PACK;document.querySelector('[data-go="station"]').hidden=!q;}
 const views={
-home(){const p=pack();V.innerHTML=`<div class="card"><label>Standard: <select id="pick">${all().map(x=>`<option value="${esc(x.id)}"${x.id===p.id?' selected':''}>${esc(x.code)}: ${esc(x.title)}${x===BUILTIN?' (built in)':''}</option>`).join('')}</select></label>
+home(){const p=pack();V.innerHTML=`<p class="tagline">Find the faults in the Earth, and in your thinking.</p><div class="card"><label>Standard: <select id="pick">${all().map(x=>`<option value="${esc(x.id)}"${x.id===p.id?' selected':''}>${esc(x.code)}: ${esc(x.title)}${x===BUILTIN?' (built in)':''}</option>`).join('')}</select></label>
  <h2>${esc(p.code)}: ${esc(p.title)}</h2><p>${esc(p.text)}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="practice">Start practice</button></p></div>`;
  V.querySelector('#pick').onchange=e=>{S.sel=e.target.value;persist();navSync();go('home');};},
 practice(){let i=0;const p=pack(),set=shuffle(p.items);
@@ -55,5 +55,5 @@ teacher(){V.innerHTML=`<div class="card"><h2>Teacher: bring your standards</h2><
 };
 function go(v){(views[v]||views.home)();V.focus();}
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go);});
-document.getElementById('reset').onclick=()=>{if(confirm('Clear everything on this device? This erases all progress for every standard, your Forecaster runs, and all uploaded teacher packs.')){for(const k of [KEY,OLD,PACKS_KEY])localStorage.removeItem(k);S=load();UP=[];navSync();go('home');}};
+document.getElementById('reset').onclick=()=>{if(confirm('Clear everything on this device? This erases all progress for every standard, your Forecaster runs and explanations, and all uploaded teacher packs.')){for(const k of [KEY,OLD,PACKS_KEY,GUIDE_KEY])localStorage.removeItem(k);S=load();UP=[];navSync();go('home');}};
 navSync();go('home');

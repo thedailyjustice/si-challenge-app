@@ -1,6 +1,6 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
- "title": "Fault Line Lab standard pack",
+ "title": "Fault Finder standard pack",
  "description": "One standard's practice questions. Each item has exactly one choice whose tag is null (the correct answer); every non-null tag must be a key in misconceptions. The app also enforces those two rules and unique item ids, which JSON Schema cannot fully express.",
  "type": "object",
  "required": ["id", "code", "title", "text", "grade", "items", "misconceptions"],

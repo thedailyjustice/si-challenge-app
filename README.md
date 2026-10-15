@@ -1,4 +1,5 @@
-# Fault Line Lab (working name)
+# Fault Finder
+_Find the faults in the Earth, and in your thinking._
 New app for the 2027 Presidential SI Challenge, started 2026-10-14. Static files only: open via any static server (`python3 -m http.server`). No build step, no outside requests, no accounts, no names.
 
 - packs/8-ESS3-1.json: built-in 8th grade pack (8.ESS3.1). Item and feedback text signed off by Johnathan 2026-10-15; do not edit without a new sign-off.
