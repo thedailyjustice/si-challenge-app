@@ -51,7 +51,19 @@
   "predWrong": "Your prediction did not match. That is fine. Scientists learn from surprises.",
   "button": "Next: explain it",
   "alwaysNoNote": "The \"always no quake\" score never changes. It is the score for never saying quake at all. A useful model should do better than just saying no.",
-  "pointsUnit": "points"
+  "pointsUnit": "points",
+  "predMixed": "None of the three choices fit exactly. The change was mixed, and that is fine. Scientists learn from surprises.",
+  "outcomes": {
+   "up_up": "It caught more quakes and made more false alarms.",
+   "down_down": "It caught fewer quakes and made fewer false alarms.",
+   "same_same": "Nothing changed: same quakes caught, same false alarms.",
+   "up_down": "It caught more quakes AND made fewer false alarms. That is better on both counts.",
+   "down_up": "It caught fewer quakes AND made more false alarms. That is worse on both counts.",
+   "up_same": "It caught more quakes, and false alarms stayed the same.",
+   "down_same": "It caught fewer quakes, and false alarms stayed the same.",
+   "same_up": "Quakes caught stayed the same, but false alarms went up.",
+   "same_down": "Quakes caught stayed the same, and false alarms went down."
+  }
  },
  "step4": {
   "lead": "Step 4: Explain. Finish the sentence in your own words.",
@@ -102,5 +114,6 @@
  "runsCaption": "Your test runs (run 1 is your baseline: your first run, the one you compare against)",
  "think": "Think: Look at Memphis and the middle of plates. Why does the model rarely flag them?",
  "alwaysNoCol": "Always says no",
- "squaresUnit": "map squares"
+ "squaresUnit": "map squares",
+ "whyLabel": "Why?"
 }
