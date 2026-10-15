@@ -2,13 +2,13 @@
 // Each wrong choice carries a misconception tag (m) used by the on-device coach.
 export const STANDARD={code:"8.ESS3.1",text:"Collect data, map, and describe patterns in the locations of volcanoes and earthquakes related to tectonic plate boundaries, interactions, and hotspots in order to forecast the locations and likelihoods of future events."};
 export const MISCONCEPTIONS={
- random:"Thinks earthquakes happen randomly anywhere on Earth, not mostly along plate boundaries.",
- exact:"Thinks scientists can predict the exact day and place of an earthquake. They can only forecast likelihood over years.",
- hotspot:"Forgets hotspots: thinks every volcano must be at a plate boundary.",
- weather:"Thinks weather or climate causes earthquakes.",
- center:"Thinks plates are most active in their middles instead of at their edges.",
- intraplate:"Thinks earthquakes can only happen at plate edges. Some, like New Madrid, happen inside plates.",
- once:"Thinks a place that just had a big quake is now safe, or that past quakes don't tell us about future ones."
+ random:"It's easy to think quakes can happen anywhere, but most happen in long belts along plate boundaries.",
+ exact:"No one can predict the exact day of a quake. Scientists forecast the chance of one over many years.",
+ hotspot:"Not every volcano is at a plate edge. Some, like Hawaii's, form over a hotspot deep in the mantle.",
+ weather:"Weather doesn't cause quakes or volcanoes. They come from plates moving deep underground.",
+ center:"Plates are most active at their edges, where they meet, not in their middles.",
+ intraplate:"Most quakes happen at plate edges, but some, like New Madrid near Memphis, happen inside a plate.",
+ once:"A big quake doesn't make a place safe. Places with many past quakes are likely to have more."
 };
 export const ITEMS=[
 {id:"q1",q:"On a world map of the last 10 years of big earthquakes, where do most of the dots fall?",c:[["In belts along plate edges",null],["Spread evenly across all land and ocean",'random'],["Mostly in the middle of continents",'center'],["Mostly in places with hot weather",'weather']]},
