@@ -53,7 +53,7 @@ export async function mount(el,save,runs=[]){
    const upd=()=>{const n=changed();$('#g2').disabled=n!==1;$('#hint').textContent=n===1?'':n===0?T.step2.needOne:T.step2.tooMany;};upd();el._upd=upd;
    $('#g2').onclick=()=>{G.mine=run(val());G.step=3;sg();guide();};}
   if(G.step===3){const b=G.base,m=G.mine,R=T.step3.rows,k=Object.keys(R),u=x=>x==='acc'||x==='base'?'%':'';
-   const radUp=m.rad>b.rad,pr=radUp?(m.tp>b.tp&&m.fp>b.fp?0:m.tp<b.tp?1:2):null;
+   const radUp=m.rad>b.rad,pr=radUp?(m.tp>b.tp&&m.fp>b.fp?0:m.tp<b.tp&&m.fp<b.fp?1:m.tp===b.tp&&m.fp===b.fp?2:-1):null;
    g.innerHTML=`<p>${esc(T.step3.lead)}</p><div class="scroll"><table id="cmp"><thead><tr>${T.step3.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${k.map(x=>{const d=m[x]-b[x];return `<tr><th>${esc(R[x])}</th><td>${b[x]}${u(x)}</td><td>${m[x]}${u(x)}</td><td>${d>0?'+':''}${d}</td></tr>`}).join('')}</tbody></table></div>
    <p><small>${esc(T.step3.accNote)}</small></p>${pr===null?'':`<p>${esc(pr===G.pred?T.step3.predRight:T.step3.predWrong)}</p>`}<p><button class="primary" id="g3">${esc(T.step3.button)}</button></p>`;
    $('#g3').onclick=()=>{G.step=4;sg();guide();};}
@@ -64,5 +64,5 @@ export async function mount(el,save,runs=[]){
  $('#dots').onclick=()=>{show=!show;draw();};
  $('#train').onclick=()=>run(val());
  $('#restart').onclick=()=>{G={step:1};sg();res=null;draw();guide();};
- el.querySelectorAll('#chk button').forEach(b=>b.onclick=()=>{const c=T.check.choices[+b.dataset.k];el.querySelectorAll('#chk button').forEach(x=>{if(T.check.choices[+x.dataset.k][1]===null)x.classList.add('ok')});if(c[1])b.classList.add('bad');$('#chkfb').textContent=c[2];G.chk=c[1]===null;sg();});
+ el.querySelectorAll('#chk button').forEach(b=>b.onclick=()=>{const c=T.check.choices[+b.dataset.k];el.querySelectorAll('#chk button').forEach(x=>{if(T.check.choices[+x.dataset.k][1]===null)x.classList.add('ok')});if(c[1])b.classList.add('bad');$('#chkfb').textContent=c[1]===null?c[2]:T.check.wrongLead+' '+T.check.misconceptions[c[1]];G.chk=c[1]===null;sg();});
  table();draw();guide();}

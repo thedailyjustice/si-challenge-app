@@ -5,7 +5,12 @@
  "intro": "Each dot is a real magnitude 6 or bigger earthquake from the USGS. The model only sees quakes from 2016 to 2020. Then it forecasts which map squares will have a big quake from 2021 to 2025. We check it against what really happened.",
  "red": "A red square means the model thinks a big quake is more likely there over the next few years. It does not mean a quake will happen on a certain date.",
  "legend": "Bright dots: 2021–2025 quakes the model tried to forecast. Faint dots: 2016–2020 quakes it learned from.",
- "stepNames": ["Predict", "Change one setting", "See what changed", "Explain"],
+ "stepNames": [
+  "Predict",
+  "Change one setting",
+  "See what changed",
+  "Explain"
+ ],
  "radLabel": "How far the model looks around each square",
  "radWhy": "Quakes cluster in long belts along plate boundaries. Looking at nearby squares follows a boundary and can catch more quakes. But it also spreads risk into quiet plate interiors, which makes more false alarms.",
  "cutLabel": "Past quakes needed to call a square risky",
@@ -13,7 +18,11 @@
  "step1": {
   "lead": "Step 1: Predict. First the model runs once with its starting settings. That run is your baseline. Before you change anything, make a prediction.",
   "q": "If the model looks farther around each square, what do you think will happen?",
-  "choices": ["It will catch more quakes, but it will also make more false alarms", "It will catch fewer quakes", "Nothing will change"],
+  "choices": [
+   "It will catch more quakes and make more false alarms",
+   "It will catch fewer quakes and make fewer false alarms",
+   "Nothing will change"
+  ],
   "button": "Lock in my prediction and run the baseline"
  },
  "step2": {
@@ -24,8 +33,19 @@
  },
  "step3": {
   "lead": "Step 3: See what changed. Compare your new run to the baseline.",
-  "rows": {"acc": "Accuracy (squares it got right)", "tp": "Quake areas caught", "fn": "Quake areas missed", "fp": "False alarms", "base": "A model that always says \"no quake\""},
-  "cols": ["", "Baseline", "Your change", "Difference"],
+  "rows": {
+   "acc": "Accuracy (squares it got right)",
+   "tp": "Quake areas caught",
+   "fn": "Quake areas missed",
+   "fp": "False alarms",
+   "base": "A model that always says \"no quake\""
+  },
+  "cols": [
+   "",
+   "Baseline",
+   "Your change",
+   "Difference"
+  ],
   "accNote": "Accuracy can fool you. Most squares never have a big quake, so a model that always says \"no quake\" still scores high. Check what the model caught and missed, too.",
   "predRight": "Your prediction matched what happened.",
   "predWrong": "Your prediction did not match. That is fine. Scientists learn from surprises.",
@@ -50,11 +70,30 @@
  "check": {
   "q": "The model colors the square around a city red. What does that mean?",
   "choices": [
-   ["A big quake is more likely there over the next few years", null, "Correct. A forecast is about likelihood over time, not a date."],
-   ["A big quake will happen there on a date the model knows", "exact", "Not quite. No one can predict the exact day of a quake. Red means a higher chance over years."],
-   ["Squares that are not red are safe from quakes", "safe", "Not quite. The model misses some quakes, like Hawaii and Turkey–Syria. A square that is not red can still have one."],
-   ["The weather there causes quakes", "weather", "Not quite. Weather doesn't cause quakes. They come from plates moving deep underground."]
-  ]
+   [
+    "A big quake is more likely there over the next few years",
+    null,
+    "Correct. A forecast is about likelihood over time, not a date."
+   ],
+   [
+    "A big quake will happen there on a date the model knows",
+    "exact"
+   ],
+   [
+    "Squares that are not red are safe from quakes",
+    "safe"
+   ],
+   [
+    "The weather there causes quakes",
+    "weather"
+   ]
+  ],
+  "misconceptions": {
+   "exact": "No one can predict the exact day of a quake. Scientists forecast the chance of one over many years.",
+   "safe": "A square that isn't red can still have a quake. The model misses some.",
+   "weather": "Weather doesn't cause quakes or volcanoes. They come from plates moving deep underground."
+  },
+  "wrongLead": "Not quite."
  },
  "freePlay": "Free play: change any settings and test as many times as you like. Your runs are listed below.",
  "restart": "Start the guided steps again",
