@@ -15,7 +15,7 @@ export function mount(el,save,runs=[]){
  el.innerHTML=`<div class="card"><h2>Quake Forecaster</h2><p>Each dot is a real magnitude 6+ earthquake (USGS). The model only sees quakes from <b>2016–2020</b>. It forecasts which map squares will have a quake in <b>2021–2025</b>, then we check it against what really happened.</p>
  <canvas id="map" width="${W}" height="${H}" aria-label="World map of earthquake forecasts"></canvas>
  <p><small>Red square: model said risk. Bright dots: 2021–2025 quakes it was trying to forecast. Faint dots: 2016–2020 quakes it learned from.</small></p>
- <fieldset class="card"><legend>Engineer it (STEM Innovators 3.4, 3.5)</legend>
+ <fieldset class="card"><legend>Engineer it: change a setting, retrain, compare</legend>
  <label>How far the model looks around each square: <input type="range" id="rad" min="0" max="3" value="0"> <b id="radv">0</b> squares</label><br>
  <label>Past quakes needed to call it risky: <input type="range" id="cut" min="1" max="6" value="3"> <b id="cutv">3</b></label></fieldset>
  <p><button class="primary" id="train">Train and test</button> <button id="dots">Show/hide quakes</button></p><p id="out" aria-live="polite"></p>
