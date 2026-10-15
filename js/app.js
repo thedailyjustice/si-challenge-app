@@ -2,7 +2,7 @@ import {ITEMS,STANDARD,MISCONCEPTIONS} from './items.js';import {updateMastery,i
 const KEY='faultline-v1';const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}};
 let S=Object.assign({mastery:initMastery(),answered:0,mis:{},log:[]},load());const save=p=>{Object.assign(S,p);localStorage.setItem(KEY,JSON.stringify(S));};
 const V=document.getElementById('view');const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
-const bar=()=>`<div class="bar" role="progressbar" aria-valuenow="${Math.round(S.mastery*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${S.mastery*100}%"></i></div>`;
+const shown=()=>S.answered?S.mastery:0;const bar=()=>`<div class="bar" role="progressbar" aria-valuenow="${Math.round(shown()*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${shown()*100}%"></i></div>`;
 const views={
 home(){V.innerHTML=`<div class="card"><h2>${STANDARD.code}: Earthquakes and volcanoes</h2><p>${STANDARD.text}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="practice">Start practice</button></p></div>`;},
 practice(){let i=0;const set=shuffle(ITEMS);
