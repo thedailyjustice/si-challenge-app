@@ -14,7 +14,7 @@ practice(){let i=0;const set=shuffle(ITEMS);
    save({mastery:updateMastery(S.mastery,ok),answered:S.answered+1,mis,log:[...S.log,{id:it.id,ok,m:m||null,t:Date.now()}].slice(-200)});
    V.querySelector('#fb').innerHTML=(ok?'Correct. ':'Not quite. '+MISCONCEPTIONS[m]+' ')+'<button class="primary" id="nx">Next</button>';
    V.querySelector('#nx').onclick=()=>{i++;show()};V.querySelector('#nx').focus();});};show();},
-station(){mount(V,save,S.runs||[]);},
+station(){mount(V,save,(S.runs||[]).filter(r=>"rad" in r));},
 coach(){const a=advise(S,MISCONCEPTIONS);V.innerHTML=`<div class="card"><h2>Coach</h2><p>${a.msg}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="${a.next}">Go to ${a.next==='station'?'Quake Forecaster':'practice'}</button></p><p><small>The coach runs only on this device. It counts which wrong answers you choose and estimates mastery with Bayesian Knowledge Tracing.</small></p></div>`;}
 };
 function go(v){(views[v]||views.home)();V.focus();}
