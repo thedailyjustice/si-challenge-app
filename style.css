@@ -10,3 +10,5 @@ canvas{width:100%;height:auto;background:#09203a;border-radius:10px;touch-action
 footer{font-size:.85rem;opacity:.85;text-align:center;padding:1rem}small{opacity:.8}
 table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.5rem}th,td{border:1px solid #3b5277;padding:.25rem .4rem;text-align:center}caption{text-align:left;font-weight:600;padding:.3rem 0}
 input[type=range]{width:min(260px,60vw);vertical-align:middle}fieldset{border:1px solid #3b5277}
+.scroll{overflow-x:auto;max-width:100%}
+@media (max-width:600px){main{padding:.4rem}.card{padding:.6rem}canvas{width:calc(100vw - .8rem);max-width:none;margin-left:-.2rem}}

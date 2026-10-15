@@ -19,16 +19,16 @@ export function mount(el,save,runs=[]){
  <label>How far the model looks around each square: <input type="range" id="rad" min="0" max="3" value="0"> <b id="radv">0</b> squares</label><br>
  <label>Past quakes needed to call it risky: <input type="range" id="cut" min="1" max="6" value="3"> <b id="cutv">3</b></label></fieldset>
  <p><button class="primary" id="train">Train and test</button> <button id="dots">Show/hide quakes</button></p><p id="out" aria-live="polite"></p>
- <table id="runs"><caption>Your test runs (first run is your baseline)</caption><thead><tr><th>Run</th><th>Look</th><th>Needed</th><th>Accuracy</th><th>Caught</th><th>Missed</th><th>False alarms</th><th>Change</th></tr></thead><tbody></tbody></table>
+ <div class="scroll"><table id="runs"><caption>Your test runs (first run is your baseline)</caption><thead><tr><th>Run</th><th>Look</th><th>Needed</th><th>Accuracy</th><th>Caught</th><th>Missed</th><th>False alarms</th><th>Always-no</th><th>Change</th></tr></thead><tbody></tbody></table></div>
  <p><small>Think: is a high accuracy always good? What would happen if the model just said "no quake" everywhere? Look at Memphis and the middle of plates.</small></p></div>`;
  const $=q=>el.querySelector(q),cv=$('#map'),cx=cv.getContext('2d');let show=true,res=null;
  function draw(){cx.fillStyle='#09203a';cx.fillRect(0,0,W,H);
   if(res)for(const p of res.cells)if(p.h){cx.fillStyle='#ff7a7a66';cx.fillRect(p.c*CELL,p.r*CELL,CELL,CELL);}
   if(show)for(const q of QUAKES){const [x,y]=xy(q);cx.fillStyle=q[3]>=2021?'#ffb84d':'#ffb84d44';cx.fillRect(x-1.5,y-1.5,3,3);}}
- function table(){const b=runs[0]?.acc;$('#runs tbody').innerHTML=runs.map((r,i)=>`<tr><td>${i+1}</td><td>${r.rad}</td><td>${r.cut}</td><td>${r.acc}%</td><td>${r.tp}</td><td>${r.fn}</td><td>${r.fp}</td><td>${i?(r.acc-b>=0?'+':'')+(r.acc-b)+' pts':'baseline'}</td></tr>`).join('');}
+ function table(){const b=runs[0]?.acc;$('#runs tbody').innerHTML=runs.map((r,i)=>`<tr><td>${i+1}</td><td>${r.rad}</td><td>${r.cut}</td><td>${r.acc}%</td><td>${r.tp}</td><td>${r.fn}</td><td>${r.fp}</td><td>${r.base??''}%</td><td>${i?(r.acc-b>=0?'+':'')+(r.acc-b)+' pts':'baseline'}</td></tr>`).join('');}
  for(const id of ['rad','cut'])$('#'+id).oninput=e=>$('#'+id+'v').textContent=e.target.value;
  $('#dots').onclick=()=>{show=!show;draw();};
  $('#train').onclick=()=>{const rad=+$('#rad').value,cut=+$('#cut').value;res=forecast(rad,cut);
   $('#out').textContent=`Accuracy ${res.acc}%. Caught ${res.tp} quake areas, missed ${res.fn}, false alarms ${res.fp}. A model that always says "no quake" would score ${res.baseline}%.`;
-  runs.push({rad,cut,acc:res.acc,tp:res.tp,fn:res.fn,fp:res.fp});save({runs:runs.slice(-50)});table();draw();};
+  runs.push({rad,cut,acc:res.acc,tp:res.tp,fn:res.fn,fp:res.fp,base:res.baseline});save({runs:runs.slice(-50)});table();draw();};
  table();draw();}
