@@ -7,7 +7,7 @@ export const MISCONCEPTIONS={
  hotspot:"Not every volcano is at a plate boundary. Some, like Hawaii's, form over a hotspot deep in the mantle.",
  weather:"Weather doesn't cause quakes or volcanoes. They come from plates moving deep underground.",
  center:"Plates are most active at their boundaries, where they meet, not in their middles.",
- intraplate:"Most quakes happen at plate boundaries, but some, like New Madrid near Memphis, happen inside a plate.",
+ intraplate:"Most quakes happen at plate boundaries, but some, like New Madrid near Memphis, happen in the middle of a plate, far from any boundary.",
  once:"A big quake doesn't make a place safe. Places with many past quakes are likely to have more."
 };
 export const ITEMS=[
