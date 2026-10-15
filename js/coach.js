@@ -10,6 +10,7 @@ export function advise(state,MIS){
  if(!state.answered) return {msg:"Answer a few practice questions and I'll look for patterns in your misses.",next:"practice"};
  if(tags.length&&tags[0][1]>=2){const [t,n]=tags[0];
   const next=(t==='random'||t==='center'||t==='hotspot')?'station':'practice';
-  return {msg:`You picked answers like this ${n} times: ${MIS[t]}`,next,tag:t};}
- if(m>=.95) return {msg:"Your mastery looks strong. Try training the Quake Forecaster and find where it fails.",next:"station"};
+  return {msg:`You've chosen this kind of answer ${n} times. Here's the idea to fix: ${MIS[t]}`,next,tag:t};}
+ if(m>=.95) return {msg:"You know this well. Try training the Quake Forecaster and find where it fails.",next:"station"};
+ if(m<.8) return {msg:"No strong pattern yet. Try the Quake Forecaster, or practice just the questions you missed.",next:"station",weak:true};
  return {msg:"No strong pattern yet. Keep practicing.",next:"practice"};}

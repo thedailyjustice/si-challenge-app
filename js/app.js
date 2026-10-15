@@ -13,15 +13,16 @@ const persist=()=>localStorage.setItem(KEY,JSON.stringify(S));
 const all=()=>[BUILTIN,...UP];const pack=()=>all().find(p=>p.id===S.sel)||BUILTIN;
 const st=(id=pack().id)=>S.packs[id]||(S.packs[id]=blank());
 const save=p=>{if('runs' in p){S.runs=p.runs;}else Object.assign(st(),p);persist();};
+let onlyMissed=false;const missed=()=>{const last={};for(const e of st().log)last[e.id]=e.ok;const ids=new Set(pack().items.map(x=>x.id));return Object.keys(last).filter(k=>!last[k]&&ids.has(k));};
 const V=document.getElementById('view');const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
 const shown=()=>{const s=st();return s.answered?s.mastery:0};
-const bar=()=>`<div class="bar" role="progressbar" aria-label="Mastery" aria-valuenow="${Math.round(shown()*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${shown()*100}%"></i></div><p><small>${Math.round(shown()*100)}% mastery · ${st().answered} answered</small></p>`;
+const bar=()=>`<div class="bar" role="progressbar" aria-label="How well you know it" aria-valuenow="${Math.round(shown()*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${shown()*100}%"></i></div><p><small>${Math.round(shown()*100)}% · ${st().answered} answered</small></p>`;
 function navSync(){const q=pack().id===QUAKE_PACK;document.querySelector('[data-go="station"]').hidden=!q;}
 const views={
 home(){const p=pack();V.innerHTML=`<p class="subtitle">Real Earthquake Data, Real Science Thinking</p><p class="tagline">Find the faults in the Earth, and in your thinking.</p><div class="card"><label>Standard: <select id="pick">${all().map(x=>`<option value="${esc(x.id)}"${x.id===p.id?' selected':''}>${esc(x.code)}: ${esc(x.title)}${x===BUILTIN?' (built in)':''}</option>`).join('')}</select></label>
- <h2>${esc(p.code)}: ${esc(p.title)}</h2><p>${esc(p.text)}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="practice">Start practice</button></p></div>`;
+ <h2>${esc(p.code)}: ${esc(p.title)}</h2><p>${esc(p.text)}</p><p>How well you know it</p>${bar()}<p><button class="primary" data-go="practice">Start practice</button></p></div>`;
  V.querySelector('#pick').onchange=e=>{S.sel=e.target.value;persist();navSync();go('home');};},
-practice(){let i=0;const p=pack(),set=shuffle(p.items);
+practice(){let i=0;const p=pack(),mi=onlyMissed?missed():[];onlyMissed=false;const set=shuffle(mi.length?p.items.filter(x=>mi.includes(x.id)):p.items);
  const show=()=>{if(i>=set.length)return go('coach');const it=set[i],ch=shuffle(it.c);
   V.innerHTML=`<div class="card"><p><small>Question ${i+1} of ${set.length} · ${esc(p.code)}</small></p><h2>${esc(it.q)}</h2><div class="choices">${ch.map(([t],k)=>`<button data-k="${k}">${esc(t)}</button>`).join('')}</div><p id="fb" aria-live="polite"></p></div>${bar()}`;
   V.querySelectorAll('.choices button').forEach(b=>b.onclick=()=>{const m=ch[+b.dataset.k][1],ok=m===null,s=st();
@@ -32,8 +33,10 @@ practice(){let i=0;const p=pack(),set=shuffle(p.items);
    const nx=document.createElement('button');nx.className='primary';nx.id='nx';nx.textContent='Next';fb.append(nx);
    nx.onclick=()=>{i++;show()};nx.focus();});};show();},
 station(){if(pack().id!==QUAKE_PACK)return go('home');mount(V,save,(S.runs||[]).filter(r=>"rad" in r));},
-coach(){const p=pack(),q=p.id===QUAKE_PACK;let a=advise(st(),p.misconceptions);if(!q&&a.next==='station')a={...a,msg:a.tag?a.msg:'Your mastery looks strong. Keep practicing to stay sharp.',next:'practice'};
- V.innerHTML=`<div class="card"><h2>Coach</h2><p>${esc(a.msg)}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="${a.next}">Go to ${a.next==='station'?'Quake Forecaster':'practice'}</button></p><p><small>The coach runs only on this device. It counts which wrong answers you choose and estimates mastery with Bayesian Knowledge Tracing.</small></p></div>`;},
+coach(){const p=pack(),q=p.id===QUAKE_PACK;let a=advise(st(),p.misconceptions);
+ if(!q&&a.next==='station')a={...a,msg:a.weak?'No strong pattern yet. Practice just the questions you missed.':a.tag?a.msg:'You know this well. Keep practicing to stay sharp.',next:'practice'};
+ const miss=missed();
+ V.innerHTML=`<div class="card"><h2>Coach</h2><p>${esc(a.msg)}</p><p>How well you know it</p>${bar()}<p><button class="primary" data-go="${a.next}">Go to ${a.next==='station'?'Quake Forecaster':'practice'}</button>${a.weak&&miss.length?` <button data-go="practice" data-missed="1">Practice the ${miss.length} I missed</button>`:''}</p><details><summary>For teachers</summary><p><small>The coach runs only on this device. It counts which wrong answers a student chooses and estimates mastery with Bayesian Knowledge Tracing.</small></p></details></div>`;},
 teacher(){V.innerHTML=`<div class="card"><h2>Teacher: bring your standards</h2><p>Load a standard pack (.json) or paste one below. Packs are checked, then saved only on this device. Nothing is uploaded anywhere. The format is described in README.md (packs/schema.json).</p>
  <p><label>Load a file: <input type="file" id="file" accept=".json,application/json"></label></p>
  <p><label for="paste">Or paste JSON:</label><br><textarea id="paste" rows="8" style="width:100%"></textarea></p><p><button class="primary" id="add">Check and add pack</button></p>
@@ -54,6 +57,6 @@ teacher(){V.innerHTML=`<div class="card"><h2>Teacher: bring your standards</h2><
  list();}
 };
 function go(v){(views[v]||views.home)();V.focus();}
-document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go);});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){onlyMissed=!!g.dataset.missed;go(g.dataset.go);}});
 document.getElementById('reset').onclick=()=>{if(confirm('Clear everything on this device? This erases all progress for every standard, your Forecaster runs and explanations, and all uploaded teacher packs.')){for(const k of [KEY,OLD,PACKS_KEY,GUIDE_KEY])localStorage.removeItem(k);S=load();UP=[];navSync();go('home');}};
 navSync();go('home');
