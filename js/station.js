@@ -41,6 +41,9 @@ export async function mount(el,save,runs=[]){
   $('#out').textContent=`Accuracy ${res.acc}%. Caught ${res.tp} quake areas, missed ${res.fn}, false alarms ${res.fp}. A model that always says "no quake" would score ${res.baseline}%.`;
   runs.push(r);save({runs:runs.slice(-50)});table();draw();return r;};
  const changed=()=>{const v=val();return (v.rad!==BASE.rad)+(v.cut!==BASE.cut)};
+const rmo=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches),wide=()=>!!(window.matchMedia&&matchMedia('(min-width:1000px)').matches),goY=y=>scrollTo({top:Math.max(0,y),behavior:rmo()?'auto':'smooth'});
+const afterLock=()=>{const r=$('#rad');r&&r.focus({preventScroll:true});if(wide())return toMap();goY(scrollY+FS.getBoundingClientRect().top-8);};
+const afterTrain=()=>{const n=$('#g3');n&&n.focus({preventScroll:true});if(!wide()||!n)return toMap();let y=scrollY+cv.getBoundingClientRect().top-8;const nb=n.getBoundingClientRect().bottom+scrollY-y;if(nb>innerHeight-12)y+=nb-innerHeight+12;goY(y);};
  function guide(){const g=$('#guide'),done=G.step>4;
   el.querySelectorAll('.steps li').forEach(li=>{const s=+li.dataset.s;li.className=s===G.step?'now':s<G.step?'done':'';if(s===G.step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');});
   const lock=G.step===1||G.step===3||G.step===4;$('#rad').disabled=$('#cut').disabled=lock;
@@ -50,10 +53,10 @@ export async function mount(el,save,runs=[]){
   if(G.step!==2)$('#setslot').append(FS);
   if(G.step===1){setV(BASE);g.innerHTML=`<p>${esc(T.step1.lead)}</p><p><b>${esc(T.step1.q)}</b></p><div class="choices">${[0,1,2].map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>[T.step1.choices[x[1]],x[1]]).map(([c,k])=>`<label><input type="radio" name="pred" value="${k}"> ${esc(c)}</label>`).join('')}</div><p><button class="primary" id="g1" disabled>${esc(T.step1.button)}</button></p>`;
    g.querySelectorAll('[name=pred]').forEach(r=>r.onchange=()=>{$('#g1').disabled=false});
-   $('#g1').onclick=()=>{G.pred=+g.querySelector('[name=pred]:checked').value;G.base=run(BASE);G.step=2;sg();guide();toMap();};}
+   $('#g1').onclick=()=>{G.pred=+g.querySelector('[name=pred]:checked').value;G.base=run(BASE);G.step=2;sg();guide();afterLock();};}
   if(G.step===2){g.innerHTML=`<p>${esc(T.step2.lead)}</p><div id="g2set"></div><p id="hint"></p><p><button class="primary" id="g2">${esc(T.step2.button)}</button></p>`;
    $('#g2set').append(FS);const upd=()=>{const n=changed();$('#g2').disabled=n!==1;$('#hint').textContent=n===1?'':n===0?T.step2.needOne:T.step2.tooMany;};upd();el._upd=upd;
-   $('#g2').onclick=()=>{G.mine=run(val());G.step=3;sg();guide();toMap();};}
+   $('#g2').onclick=()=>{G.mine=run(val());G.step=3;sg();guide();afterTrain();};}
   if(G.step===3){const b=G.base,m=G.mine,R=T.step3.rows,k=Object.keys(R),u=x=>x==='acc'||x==='base'?'%':'';
    const pr=m.tp>b.tp&&m.fp>b.fp?0:m.tp<b.tp&&m.fp<b.fp?1:m.tp===b.tp&&m.fp===b.fp?2:-1,dir=(a,c)=>a>c?'up':a<c?'down':'same',oc=T.step3.outcomes[dir(m.tp,b.tp)+'_'+dir(m.fp,b.fp)];
    g.innerHTML=`<p>${esc(T.step3.lead)}</p><div class="scroll"><table id="cmp"><thead><tr>${T.step3.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${k.map(x=>{const d=m[x]-b[x];return `<tr><th>${esc(R[x])}</th><td>${b[x]}${u(x)}</td><td>${m[x]}${u(x)}</td><td>${d>0?'+':''}${d}${u(x)?' '+esc(T.step3.pointsUnit):''}</td></tr>`}).join('')}</tbody></table></div>
