@@ -18,7 +18,7 @@ const shown=()=>{const s=st();return s.answered?s.mastery:0};
 const bar=()=>`<div class="bar" role="progressbar" aria-label="Mastery" aria-valuenow="${Math.round(shown()*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${shown()*100}%"></i></div><p><small>${Math.round(shown()*100)}% mastery · ${st().answered} answered</small></p>`;
 function navSync(){const q=pack().id===QUAKE_PACK;document.querySelector('[data-go="station"]').hidden=!q;}
 const views={
-home(){const p=pack();V.innerHTML=`<p class="tagline">Find the faults in the Earth, and in your thinking.</p><div class="card"><label>Standard: <select id="pick">${all().map(x=>`<option value="${esc(x.id)}"${x.id===p.id?' selected':''}>${esc(x.code)}: ${esc(x.title)}${x===BUILTIN?' (built in)':''}</option>`).join('')}</select></label>
+home(){const p=pack();V.innerHTML=`<p class="subtitle">Real Earthquake Data, Real Science Thinking</p><p class="tagline">Find the faults in the Earth, and in your thinking.</p><div class="card"><label>Standard: <select id="pick">${all().map(x=>`<option value="${esc(x.id)}"${x.id===p.id?' selected':''}>${esc(x.code)}: ${esc(x.title)}${x===BUILTIN?' (built in)':''}</option>`).join('')}</select></label>
  <h2>${esc(p.code)}: ${esc(p.title)}</h2><p>${esc(p.text)}</p><p>Mastery</p>${bar()}<p><button class="primary" data-go="practice">Start practice</button></p></div>`;
  V.querySelector('#pick').onchange=e=>{S.sel=e.target.value;persist();navSync();go('home');};},
 practice(){let i=0;const p=pack(),set=shuffle(p.items);
