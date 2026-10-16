@@ -56,7 +56,11 @@ teacher(){V.innerHTML=`<div class="card"><h2>Teacher: bring your standards</h2><
  V.querySelector('#file').onchange=e=>{const f=e.target.files[0];if(f)f.text().then(add);};
  list();}
 };
-function go(v){(views[v]||views.home)();V.focus();}
+const TEACHER_HASH='teacher-b281d36d';
+function teacherHash(){return location.hash.replace(/^#\/?/,'')===TEACHER_HASH;}
+function go(v){(views[v]||views.home)();V.focus();if(v==='teacher'){if(!teacherHash())location.hash=TEACHER_HASH;}else if(teacherHash()){history.replaceState(null,'',location.pathname+location.search);}}
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){onlyMissed=!!g.dataset.missed;go(g.dataset.go);}});
 document.getElementById('reset').onclick=()=>{if(confirm('Clear everything on this device? This erases all progress for every standard, your Forecaster runs and explanations, and all uploaded teacher packs.')){for(const k of [KEY,OLD,PACKS_KEY,GUIDE_KEY])localStorage.removeItem(k);S=load();UP=[];navSync();go('home');}};
-navSync();go('home');
+navSync();
+if(teacherHash())go('teacher');else go('home');
+window.addEventListener('hashchange',()=>{if(teacherHash())go('teacher');});
