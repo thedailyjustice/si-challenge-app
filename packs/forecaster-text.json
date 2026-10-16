@@ -35,8 +35,8 @@
   },
   "button": "Lock in my prediction and run the baseline",
   "instruction": {
-   "rad": "Look at the map. Each bright dot is a real big earthquake. Pick what you think will happen when the model looks farther around each square.",
-   "cut": "Look at the map. Each bright dot is a real big earthquake. Pick what you think will happen when the model needs more past quakes to call a square risky."
+   "rad": "Look at the map. The map is split into squares. Each bright dot is a real big earthquake. Pick what you think will happen when the model looks farther around each square.",
+   "cut": "Look at the map. The map is split into squares. Each bright dot is a real big earthquake. Pick what you think will happen when the model needs more past quakes to call a square risky."
   }
  },
  "step2": {

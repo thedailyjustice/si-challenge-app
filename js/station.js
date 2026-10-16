@@ -17,9 +17,9 @@ let TX=null;const BASE={rad:0,cut:3};
 const lg=()=>{try{return JSON.parse(localStorage.getItem(GUIDE_KEY))||{}}catch{return{}}};
 export async function mount(el,save,runs=[]){
  TX=TX||await (await fetch('packs/forecaster-text.json')).json();const T=TX;let G={step:1,...lg()};const sg=()=>localStorage.setItem(GUIDE_KEY,JSON.stringify(G));
- el.innerHTML=`<div class="card"><h2>${esc(T.title)}</h2><p class="mission"><b>${esc(T.mission)}</b></p><p>${esc(T.intro)}</p>
+ el.innerHTML=`<div class="card"><h2>${esc(T.title)}</h2><div id="instrslot"></div><div id="mapslot1"></div><p class="mission"><b>${esc(T.mission)}</b></p><p>${esc(T.intro)}</p>
  <ol class="steps" aria-label="Guided steps">${T.stepNames.map((n,k)=>`<li data-s="${k+1}">${k+1}. ${esc(n)}</li>`).join('')}</ol>
- <div class="gwrap"><div id="guide" class="card" aria-live="polite"></div><div class="mapcol"><canvas id="map" width="${W}" height="${H}" aria-label="World map of earthquake forecasts"></canvas>
+ <div class="gwrap"><div id="guide" class="card" aria-live="polite"></div><div class="mapcol" id="mapcol"><canvas id="map" width="${W}" height="${H}" aria-label="World map of earthquake forecasts"></canvas>
  <p><small><b>${esc(T.red)}</b> ${esc(T.legend)}</small></p></div></div>
  <div id="setslot"><fieldset class="card"><legend>Settings</legend>
  <div class="sl" id="sl-rad"><p class="slflag" hidden></p><label><b>${esc(T.radLabel)}:</b> <input type="range" id="rad" min="0" max="3" value="0"> <b id="radv">0</b> ${esc(T.squaresUnit)}</label><details class="why"><summary>${esc(T.whyLabel)}</summary><small>${esc(T.radWhy)}</small></details></div>
@@ -35,6 +35,7 @@ export async function mount(el,save,runs=[]){
  const setV=v=>{for(const k of ['rad','cut']){$('#'+k).value=v[k];$('#'+k+'v').textContent=v[k];}};
  function draw(){cx.fillStyle='#09203a';cx.fillRect(0,0,W,H);
   if(res)for(const p of res.cells)if(p.h){cx.fillStyle='#ff7a7a66';cx.fillRect(p.c*CELL,p.r*CELL,CELL,CELL);}
+  cx.strokeStyle='rgba(255,255,255,0.12)';cx.lineWidth=1;cx.beginPath();for(let x=CELL;x<W;x+=CELL){cx.moveTo(x+.5,0);cx.lineTo(x+.5,H);}for(let y=CELL;y<H;y+=CELL){cx.moveTo(0,y+.5);cx.lineTo(W,y+.5);}cx.stroke();
   if(show)for(const q of QUAKES){const [x,y]=xy(q);cx.fillStyle=q[3]>=2021?'#ffb84d':'#ffb84d44';cx.fillRect(x-1.5,y-1.5,3,3);}}
  function table(){const b=runs[0]?.acc;$('#runs tbody').innerHTML=runs.map((r,i)=>`<tr><td>${i+1}</td><td>${+r.rad}</td><td>${+r.cut}</td><td>${+r.acc}%</td><td>${+r.tp}</td><td>${+r.fn}</td><td>${+r.fp}</td><td>${r.base??''}%</td><td>${i?(r.acc-b>=0?'+':'')+(r.acc-b)+' pts':'baseline'}</td></tr>`).join('');}
  const run=v=>{res=forecast(v.rad,v.cut);const r={...v,acc:res.acc,tp:res.tp,fn:res.fn,fp:res.fp,base:res.baseline};
@@ -46,14 +47,17 @@ export async function mount(el,save,runs=[]){
 const rmo=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches),wide=()=>!!(window.matchMedia&&matchMedia('(min-width:1000px)').matches),goY=y=>scrollTo({top:Math.max(0,y),behavior:rmo()?'auto':'smooth'});
 const afterLock=()=>{const r=$('#'+SL());r&&r.focus({preventScroll:true});if(wide())return toMap();goY(scrollY+FS.getBoundingClientRect().top-8);};
 const afterTrain=()=>{const n=$('#g3');n&&n.focus({preventScroll:true});if(!wide()||!n)return toMap();let y=scrollY+cv.getBoundingClientRect().top-8;const nb=n.getBoundingClientRect().bottom+scrollY-y;if(nb>innerHeight-12)y+=nb-innerHeight+12;goY(y);};
+ const MC=$('#mapcol'),placeMap=()=>{if(G.step===1&&!wide()){if(MC.parentElement.id!=='mapslot1')$('#mapslot1').append(MC);}else if(MC.parentElement.id==='mapslot1')$('.gwrap').append(MC);};
+ if(window.matchMedia)matchMedia('(min-width:1000px)').addEventListener('change',placeMap);
  function guide(){const g=$('#guide'),done=G.step>4;
   el.querySelectorAll('.steps li').forEach(li=>{const s=+li.dataset.s;li.className=s===G.step?'now':s<G.step?'done':'';if(s===G.step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');});
+  if(G.step!==1)$('#instrslot').innerHTML='';placeMap();el.querySelectorAll('details.why').forEach(d=>{d.hidden=G.step===1;if(G.step===1)d.open=false;});
   const lock=G.step===1||G.step===3||G.step===4;$('#rad').disabled=$('#cut').disabled=lock;if(G.step===2)$('#'+OT()).disabled=true;mark();
   $('#freebar').hidden=$('#free').hidden=$('#found').hidden=!done;g.hidden=done;
   if(done){$('#setslot').append(FS);return;}
   if((G.step===3||G.step===4)&&G.mine){setV(G.mine);res=forecast(G.mine.rad,G.mine.cut);draw();}
   if(G.step!==2)$('#setslot').append(FS);
-  if(G.step===1){setV(BASE);g.innerHTML=`<p class="instr"><b>${esc(T.step1.instruction[SL()])}</b></p><p>${esc(T.step1.lead)}</p><p><b>${esc(T.step1.q[SL()])}</b></p><div class="choices">${[0,1,2].map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>[T.step1.choices[SL()][x[1]],x[1]]).map(([c,k])=>`<label><input type="radio" name="pred" value="${k}"> ${esc(c)}</label>`).join('')}</div><p><button class="primary" id="g1" disabled>${esc(T.step1.button)}</button></p>`;
+  if(G.step===1){setV(BASE);$('#instrslot').innerHTML=`<p class="instr" id="instr"><b>${esc(T.step1.instruction[SL()])}</b></p>`;g.innerHTML=`<p>${esc(T.step1.lead)}</p><p><b>${esc(T.step1.q[SL()])}</b></p><div class="choices">${[0,1,2].map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>[T.step1.choices[SL()][x[1]],x[1]]).map(([c,k])=>`<label><input type="radio" name="pred" value="${k}"> ${esc(c)}</label>`).join('')}</div><p><button class="primary" id="g1" disabled>${esc(T.step1.button)}</button></p>`;
    g.querySelectorAll('[name=pred]').forEach(r=>r.onchange=()=>{$('#g1').disabled=false});
    $('#g1').onclick=()=>{G.pred=+g.querySelector('[name=pred]:checked').value;G.base=run(BASE);G.step=2;sg();guide();afterLock();};}
   if(G.step===2){g.innerHTML=`<p>${esc(T.step2.lead)}</p><div id="g2set"></div><p id="hint"></p><p><button class="primary" id="g2">${esc(T.step2.button)}</button></p>`;
