@@ -1,5 +1,5 @@
 {
- "_note": "All student-facing text for the Quake Forecaster guided mode (8.ESS3.1). Draft by Forge 2026-10-15, awaiting Proof. Facts checked against data/usgs-m6-2016-2025.csv and js/station.js.",
+ "_note": "All student-facing text for the Quake Forecaster guided mode (8.ESS3.1). Draft by Forge 2026-10-15; Round 4 lines awaiting Proof. Facts checked against data/usgs-m6-2016-2025.csv and js/station.js.",
  "title": "Quake Forecaster",
  "mission": "Can you predict where the next big quake is most likely? Use real USGS data to find out.",
  "intro": "Each dot is a real big earthquake (magnitude 6 or more) from the USGS. The model learns from the 2016–2020 quakes, then forecasts which map squares will have a big quake in 2021–2025.",
@@ -17,17 +17,34 @@
  "cutWhy": "A higher bar means the model only flags squares with many past quakes. That gives fewer false alarms but more misses. A lower bar catches more but gives more false alarms.",
  "step1": {
   "lead": "Step 1: Predict. First the model runs once with its starting settings. That run is your baseline: your first run, the one you compare against.",
-  "q": "In Step 2 you will change one setting. What do you think will happen?",
-  "choices": [
-   "It will catch more quakes and make more false alarms",
-   "It will catch fewer quakes and make fewer false alarms",
-   "Nothing will change"
-  ],
-  "button": "Lock in my prediction and run the baseline"
+  "q": {
+   "rad": "In Step 2 you will make the model look farther around each square. What do you think will happen?",
+   "cut": "In Step 2 you will make the model need more past quakes to call a square risky. What do you think will happen?"
+  },
+  "choices": {
+   "rad": [
+    "Looking farther will catch more quakes and make more false alarms",
+    "Looking farther will catch fewer quakes and make fewer false alarms",
+    "Looking farther will change nothing"
+   ],
+   "cut": [
+    "Needing more past quakes will catch more quakes and make more false alarms",
+    "Needing more past quakes will catch fewer quakes and make fewer false alarms",
+    "Needing more past quakes will change nothing"
+   ]
+  },
+  "button": "Lock in my prediction and run the baseline",
+  "instruction": {
+   "rad": "Look at the map. Each bright dot is a real big earthquake. Pick what you think will happen when the model looks farther around each square.",
+   "cut": "Look at the map. Each bright dot is a real big earthquake. Pick what you think will happen when the model needs more past quakes to call a square risky."
+  }
  },
  "step2": {
-  "lead": "Step 2: Change ONE setting. Scientists change one thing at a time. That way they know what caused the change.",
-  "needOne": "Change one setting from the baseline, then train.",
+  "lead": "Step 2: Change the highlighted setting. Scientists change one thing at a time. That way they know what caused the change.",
+  "needOne": {
+   "rad": "Move the highlighted slider up so the model looks farther, then train.",
+   "cut": "Move the highlighted slider up so the model needs more past quakes, then train."
+  },
   "tooMany": "You changed both settings. Put one back so only one is different from the baseline.",
   "button": "Train and test"
  },
@@ -115,5 +132,9 @@
  "think": "Think: Look at Memphis and the middle of plates. Why does the model rarely flag them?",
  "alwaysNoCol": "Always says no",
  "squaresUnit": "map squares",
- "whyLabel": "Why?"
+ "whyLabel": "Why?",
+ "focusNow": "This step changes this slider",
+ "focusNext": "In Step 2 you will change this slider",
+ "tryOther": "Try a different setting",
+ "tryOtherNote": "Run the steps again with the other slider. Your test runs stay in the table."
 }

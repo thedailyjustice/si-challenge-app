@@ -19,3 +19,4 @@ details{margin-top:.6rem}summary{cursor:pointer}
 .why{margin:.2rem 0 .5rem}.why summary{font-size:.9rem}
 .gwrap #guide{margin-top:.8rem}.mapcol{margin:.8rem 0}
 @media (min-width:1000px){.gwrap{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:1rem;align-items:start}.gwrap #guide{margin:0}.mapcol{margin:0;position:sticky;top:.5rem}}
+.sl{border:2px solid transparent;border-radius:8px;padding:.3rem .5rem;margin:.3rem 0}.sl.slon{border-color:var(--acc);background:#ffffff0d}.sl.sldim{opacity:.55}.slflag{margin:0 0 .2rem;font-size:.9rem;font-weight:700;color:var(--acc)}.instr{font-size:1.05em;border-left:4px solid var(--acc);padding-left:.5rem}
