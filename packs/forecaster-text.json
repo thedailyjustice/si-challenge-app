@@ -11,21 +11,21 @@
   "See what changed",
   "Explain"
  ],
- "radLabel": "How far the model looks around each map square",
- "radWhy": "Quakes cluster in long belts along plate boundaries. Looking at nearby squares follows a boundary and can catch more quakes. But it also spreads risk into the quiet middles of plates, which makes more false alarms.",
+ "radLabel": "Search area around each square",
+ "radWhy": "At 0, the model counts past quakes only inside each square. At 1, it also counts past quakes in the 8 squares touching it. At 2 and 3, the area grows another ring of squares each time. Quakes cluster in long belts along plate boundaries, so a wider search area follows a boundary and can catch more quakes. But it also spreads risk into the quiet middles of plates, which makes more false alarms.",
  "cutLabel": "Past quakes needed to call a square risky",
  "cutWhy": "A higher bar means the model only flags squares with many past quakes. That gives fewer false alarms but more misses. A lower bar catches more but gives more false alarms.",
  "step1": {
   "lead": "Step 1: Predict. First the model runs once with its starting settings. That run is your baseline: your first run, the one you compare against.",
   "q": {
-   "rad": "In Step 2 you will make the model look farther around each square. What do you think will happen?",
-   "cut": "In Step 2 you will make the model need more past quakes to call a square risky. What do you think will happen?"
+   "rad": "Prediction: In Step 2 you will widen the area the model checks around each square. What do you think will happen?",
+   "cut": "Prediction: In Step 2 you will make the model need more past quakes to call a square risky. What do you think will happen?"
   },
   "choices": {
    "rad": [
-    "Looking farther will catch more quakes and make more false alarms",
-    "Looking farther will catch fewer quakes and make fewer false alarms",
-    "Looking farther will change nothing"
+    "A wider search area will catch more quakes and make more false alarms",
+    "A wider search area will catch fewer quakes and make fewer false alarms",
+    "A wider search area will change nothing"
    ],
    "cut": [
     "Needing more past quakes will catch more quakes and make more false alarms",
@@ -35,14 +35,14 @@
   },
   "button": "Lock in my prediction and run the baseline",
   "instruction": {
-   "rad": "Look at the map. The map is split into squares. Each bright dot is a real big earthquake. Pick what you think will happen when the model looks farther around each square.",
+   "rad": "Look at the map. The map is split into squares. Each bright dot is a real big earthquake. Pick what you think will happen when the model counts past quakes from a wider area around each square.",
    "cut": "Look at the map. The map is split into squares. Each bright dot is a real big earthquake. Pick what you think will happen when the model needs more past quakes to call a square risky."
   }
  },
  "step2": {
   "lead": "Step 2: Change the highlighted setting. Scientists change one thing at a time. That way they know what caused the change.",
   "needOne": {
-   "rad": "Move the highlighted slider up so the model looks farther, then train.",
+   "rad": "Move the highlighted slider up to widen the search area, then train.",
    "cut": "Move the highlighted slider up so the model needs more past quakes, then train."
   },
   "tooMany": "You changed both settings. Put one back so only one is different from the baseline.",
